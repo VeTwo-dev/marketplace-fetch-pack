@@ -1,0 +1,72 @@
+{
+  "name": "@vetwo/marketplace",
+  "version": "1.0.0",
+  "description": "Official Marketplace Client for the VeTwo ecosystem — discover, browse, search and install resources.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "vetwo-market": "./dist/cli/index.js",
+    "marketplace": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "assets/ascii",
+    "assets/themes"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "verify:live": "node benchmarks/live-verify.mjs",
+    "verify:play": "node benchmarks/real-play.mjs",
+    "lint": "eslint src/",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build && npm run lint",
+    "link:local": "npm link",
+    "unlink:local": "npm unlink -g @vetwo/marketplace ",
+    "relink": "npm unlink -g @vetwo/marketplace && npm link"
+  },
+  "keywords": [
+    "vetwo",
+    "marketplace",
+    "plugins",
+    "themes",
+    "modules",
+    "cli"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@inkjs/ui": "^2.0.0",
+    "@vetwo/repo-fetch": "^1.0.0",
+    "ink": "^7.1.1",
+    "react": "^19.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.3",
+    "@vitest/coverage-v8": "^5.0.1",
+    "eslint": "^10.9.1",
+    "ink-testing-library": "^4.0.0",
+    "knip": "^6.35.1",
+    "prettier": "^3.9.8",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.0",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
+  }
+}

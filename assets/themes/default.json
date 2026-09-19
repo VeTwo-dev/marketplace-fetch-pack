@@ -1,0 +1,44 @@
+{
+  "name": "Default Green",
+  "description": "VeTwo Marketplace default green theme",
+  "version": "1.0.0",
+  "colors": {
+    "accent": "green",
+    "accentDim": "#16a34a",
+    "accentBg": "#052e16",
+    "text": "white",
+    "textSecondary": "#a1a1aa",
+    "textMuted": "gray",
+    "textDim": "#52525b",
+    "success": "green",
+    "warning": "yellow",
+    "error": "red",
+    "info": "cyan",
+    "border": "#3f3f46",
+    "borderAccent": "green",
+    "surface": "#18181b",
+    "surfaceAlt": "#27272a",
+    "selection": "green",
+    "highlight": "green",
+    "selectionBg": "#052e16",
+    "danger": "#dc2626",
+    "dangerBg": "#450a0a"
+  },
+  "typography": {
+    "h1": { "bold": true, "color": "white" },
+    "h2": { "bold": true, "color": "green" },
+    "h3": { "bold": true, "color": "white" },
+    "body": { "color": "white" },
+    "metadata": { "color": "gray", "dimColor": true },
+    "description": { "color": "white" },
+    "tag": { "color": "green" },
+    "muted": { "color": "gray" }
+  },
+  "animation": {
+    "spinnerFrames": ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
+    "pulseColors": ["#166534", "#22c55e", "#4ade80", "#22c55e", "#166534"],
+    "pulseSpeed": 80,
+    "glowIntensity": 0.3
+  },
+  "separator": "─"
+}
