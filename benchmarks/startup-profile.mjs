@@ -40,7 +40,14 @@ function summarizeLedger() {
     byStatus[s] = (byStatus[s] ?? 0) + 1;
   }
   const totalTime = ledger.reduce((a, e) => a + (e.durationMs ?? 0), 0);
-  return { total, unique: byUrl.size, duplicateUrls: dups, byStatus, totalTime, maxInFlight };
+  return {
+    total,
+    unique: byUrl.size,
+    duplicateUrls: dups,
+    byStatus,
+    totalTime,
+    maxInFlight,
+  };
 }
 
 function dumpLedger(limit = 250) {
@@ -71,7 +78,9 @@ globalThis.fetch = async function tracedFetch(url, init = {}) {
     if (typeof headers.get === "function") return headers.get(n);
     return headers[n] ?? headers[n.toLowerCase()];
   };
-  const authenticated = getHeader("authorization") !== undefined && getHeader("authorization") !== null;
+  const authenticated =
+    getHeader("authorization") !== undefined &&
+    getHeader("authorization") !== null;
   try {
     const res = await realFetch(url, init);
     record({
@@ -112,7 +121,9 @@ function hasAuthHeader(headers) {
         (h) => String(h?.[0] ?? h).toLowerCase() === "authorization",
       );
     if (typeof headers === "object")
-      return Object.keys(headers).some((k) => k.toLowerCase() === "authorization");
+      return Object.keys(headers).some(
+        (k) => k.toLowerCase() === "authorization",
+      );
     if (typeof headers === "string")
       return headers.toLowerCase().includes("authorization");
   } catch {
@@ -178,12 +189,21 @@ async function wrapRepoFetch() {
       maxInFlight = Math.max(maxInFlight, inFlight);
       try {
         const out = await orig(...args);
-        const n = Array.isArray(out) ? `${out.length} items` : out === null ? "null" : "stream";
+        const n = Array.isArray(out)
+          ? `${out.length} items`
+          : out === null
+            ? "null"
+            : "stream";
         record({
           layer: `repo-fetch:${method}`,
           method: "N/A",
-          url: method === "getTree" ? "git/trees?recursive=1" : `file:${args[1]}`,
-          authenticated: !!(args[2]?.token ?? process.env.GITHUB_TOKEN ?? process.env.REPO_FETCH_TOKEN),
+          url:
+            method === "getTree" ? "git/trees?recursive=1" : `file:${args[1]}`,
+          authenticated: !!(
+            args[2]?.token ??
+            process.env.GITHUB_TOKEN ??
+            process.env.REPO_FETCH_TOKEN
+          ),
           durationMs: now() - start,
           status: `ok(${n})`,
         });
@@ -192,8 +212,13 @@ async function wrapRepoFetch() {
         record({
           layer: `repo-fetch:${method}`,
           method: "N/A",
-          url: method === "getTree" ? "git/trees?recursive=1" : `file:${args[1]}`,
-          authenticated: !!(args[2]?.token ?? process.env.GITHUB_TOKEN ?? process.env.REPO_FETCH_TOKEN),
+          url:
+            method === "getTree" ? "git/trees?recursive=1" : `file:${args[1]}`,
+          authenticated: !!(
+            args[2]?.token ??
+            process.env.GITHUB_TOKEN ??
+            process.env.REPO_FETCH_TOKEN
+          ),
           durationMs: now() - start,
           status: `throw:${e?.name ?? "?"}`,
           note: String(e?.message ?? e).slice(0, 100),
@@ -251,7 +276,9 @@ async function scenarioCold(dist) {
   console.log("--- COLD START (empty state, real network) ---");
   console.log(`construct:        ${fmt(tConstructed - t0)}`);
   console.log(`load():           ${fmt(tLoaded - tConstructed)}`);
-  console.log(`resources():      ${fmt(tRead - tLoaded)} (${resources.length} resources)`);
+  console.log(
+    `resources():      ${fmt(tRead - tLoaded)} (${resources.length} resources)`,
+  );
   console.log(`search('react'):  ${fmt(tSearch1 - tSearch0)}`);
   console.log(`TOTAL:            ${fmt(tRead - t0)}`);
   if (diag) console.log("diagnostics:", JSON.stringify(diag).slice(0, 600));
@@ -270,7 +297,9 @@ async function scenarioWarm(dest) {
   const t2 = now();
   console.log("--- WARM START (same state dir, real network allowed) ---");
   console.log(`load():           ${fmt(t1 - t0)}`);
-  console.log(`resources():      ${fmt(t2 - t1)} (${resources.length} resources)`);
+  console.log(
+    `resources():      ${fmt(t2 - t1)} (${resources.length} resources)`,
+  );
   console.log(`TOTAL:            ${fmt(t2 - t0)}`);
 }
 
@@ -286,7 +315,9 @@ async function scenarioOffline(dest) {
   const t2 = now();
   console.log("--- OFFLINE START (same state dir, network forbidden) ---");
   console.log(`load():           ${fmt(t1 - t0)}`);
-  console.log(`resources():      ${fmt(t2 - t1)} (${resources.length} resources)`);
+  console.log(
+    `resources():      ${fmt(t2 - t1)} (${resources.length} resources)`,
+  );
   console.log(`TOTAL:            ${fmt(t2 - t0)}`);
 }
 
@@ -296,21 +327,32 @@ const dl = await wrapRepoFetch();
 
 if (MODE === "all" || MODE === "cold") {
   const { dest } = await scenarioCold();
-  console.log("network summary (cold):", JSON.stringify(summarizeLedger(), null, 1));
+  console.log(
+    "network summary (cold):",
+    JSON.stringify(summarizeLedger(), null, 1),
+  );
   dumpLedger();
   console.log("connections created:", JSON.stringify(connections));
   if (MODE === "all") {
     await scenarioWarm(dest);
-    console.log("network summary (warm):", JSON.stringify(summarizeLedger(), null, 1));
-  dumpLedger();
-  console.log("connections created:", JSON.stringify(connections));
+    console.log(
+      "network summary (warm):",
+      JSON.stringify(summarizeLedger(), null, 1),
+    );
+    dumpLedger();
+    console.log("connections created:", JSON.stringify(connections));
     await scenarioOffline(dest);
-    console.log("network summary (offline):", JSON.stringify(summarizeLedger(), null, 1));
-  dumpLedger();
-  console.log("connections created:", JSON.stringify(connections));
+    console.log(
+      "network summary (offline):",
+      JSON.stringify(summarizeLedger(), null, 1),
+    );
+    dumpLedger();
+    console.log("connections created:", JSON.stringify(connections));
   }
 } else if (MODE === "warm" || MODE === "offline") {
-  console.log("warm/offline modes need a cold state dir first; run default (all).");
+  console.log(
+    "warm/offline modes need a cold state dir first; run default (all).",
+  );
 }
 console.log(`quota after: ${await quota()}`);
 console.log(`repo-fetch downloads completed: ${dl.downloads()}`);

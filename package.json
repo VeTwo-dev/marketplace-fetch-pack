@@ -30,6 +30,7 @@
     "test:coverage": "vitest run --coverage",
     "verify:live": "node benchmarks/live-verify.mjs",
     "verify:play": "node benchmarks/real-play.mjs",
+    "profile:startup": "node benchmarks/startup-profile.mjs",
     "lint": "eslint src/",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build && npm run lint",

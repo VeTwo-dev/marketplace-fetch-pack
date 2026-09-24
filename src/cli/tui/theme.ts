@@ -22,7 +22,7 @@ export const COLORS = detectMonochrome()
   ? (MONOCHROME_COLORS as unknown as typeof BASE_COLORS)
   : { ...BASE_COLORS };
 
-export {  KEYBINDINGS,  };
+export { KEYBINDINGS };
 
 export const SEPARATOR = "─".repeat(36);
 
@@ -31,6 +31,3 @@ export const TUI_THEME: Theme = {
     ...defaultTheme.components,
   },
 };
-
-;
-;

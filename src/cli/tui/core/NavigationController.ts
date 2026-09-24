@@ -67,6 +67,4 @@ export function createNavigationController(initial: ScreenId = "splash") {
   return { push, pop, goto, home, current, canGoBack, getStack };
 }
 
-type NavigationController = ReturnType<
-  typeof createNavigationController
->;
+type NavigationController = ReturnType<typeof createNavigationController>;

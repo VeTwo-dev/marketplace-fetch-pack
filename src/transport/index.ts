@@ -7,9 +7,4 @@ export type {
   TransportErrorKind,
   TransportError,
 } from "./types.js";
-export {
-  NodeFetchTransport,
-  
-} from "./node-fetch-transport.js";
-;
-;
+export { NodeFetchTransport } from "./node-fetch-transport.js";
